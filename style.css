@@ -109,21 +109,33 @@ header{
     align-items: left;
 }
 
-/* Caixa de cores */
 #jogo {
     display: flex;
     flex-direction: column;   
     align-items: center;      
-    /*justify-content: space-between;*/
     height: 100vh;
 }
 
 .jogo-container{
-    margin: 50px;
-  
+    background-color: #2A2970B0; 
+    backdrop-filter: blur(10px);   
+    padding: 40px 60px 100px;     
+    border-radius: 40px;
+    border: 4px solid #B39EB550;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+    position: absolute;
+    top: 55%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    min-width: 900px;
 }
 
 .pergunta{
+    margin-top: 0px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -131,29 +143,28 @@ header{
 }
 
 .cores{
-    margin-top: 30px;
-    width: 350px;
-    height: 350px;
-    border-radius: 80%;
+    margin-top: 0px;
+    width: 150px;
+    height: 150px;
+    border: 4px solid #B39EB550;
+    border-radius: 25px;
     background-color: gray;
 }
 
 .mais{
-    font-size: 40px;
+    margin-top: 20px;
+    font-size: 80px;
 }
 
-/* piano */
 .piano {
-    position: absolute;
-    bottom: 40px;
-    left: 50%;
-    transform: translateX(-50%);
+    position: relative;
+    bottom: auto;
+    left: auto;
     display: flex;
     justify-content: center;
     align-items: flex-start;
 }
 
-/* teclas */
 .key {
     border: 1px solid black;
     cursor: pointer;
@@ -164,18 +175,18 @@ header{
     height: 200px;
     background: white;
     z-index: 1;
+    border-radius: 7px 7px 7px 7px;
 }
 
 .black {
     width: 40px;
     height: 120px;
-     border-radius: 0 0 5px 5px;
+    border-radius: 0 0 5px 5px;
     background: black;
     position: absolute;
     z-index: 2;
 }
 
-/*  efeito click */
 .key:active {
     transform: scale(0.97);
     background: gray;
@@ -213,13 +224,11 @@ header{
 .feedback {
     width: 100%;              
     text-align: center;       
-    
     font-size: 40px;
-     margin: 40px 0; 
-
+    margin: 14.5px 0; 
     color: white;
     opacity: 0;
-    transition: 0.3s;
+    transition: 0.2s;
 }
 
 .feedback.ativo {
