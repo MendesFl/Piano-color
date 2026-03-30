@@ -62,7 +62,7 @@ function iniciarjogo(){
     setTimeout(() => {
         cor1.classList.remove('pop');
         cor2.classList.remove('pop');
-    }, 280);
+    }, 280);3
 
     console.log("Resultado:", respostaCorreta);
 }
