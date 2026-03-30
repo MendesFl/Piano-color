@@ -54,23 +54,43 @@ function iniciarjogo(){
 
      respostaCorreta = misturarCores(corA, corB);
 
+      // ativa efeito pop
+    cor1.classList.add('pop');
+    cor2.classList.add('pop');
+
+    // remove pop após 280ms para poder reaplicar depois
+    setTimeout(() => {
+        cor1.classList.remove('pop');
+        cor2.classList.remove('pop');
+    }, 280);3
+
     console.log("Resultado:", respostaCorreta);
 }
 
 function mostrarFeedback(acertou) {
     const feedback = document.getElementById("feedback");
 
+    // Remove classes antigas e força reinício da animação
+    feedback.classList.remove("show", "acerto", "erro");
+    void feedback.offsetWidth;
+
+    // Define tipo de feedback
     if (acertou) {
         feedback.textContent = "Acertou! 🎉";
-        feedback.className = "ativo acerto";
+        feedback.classList.add("acerto");
     } else {
         feedback.textContent = "Errou! ❌";
-        feedback.className = "ativo erro";
+        feedback.classList.add("erro");
     }
 
+    // Adiciona a classe show para animar
+    feedback.classList.add("show");
+
+    // Remove o feedback depois da animação
     setTimeout(() => {
-        feedback.className = "";
-    }, 1500);
+        feedback.classList.remove("show", "acerto", "erro");
+        feedback.textContent = "";
+    }, 800);
 }
 
 const teclas = document.querySelectorAll(".key");
@@ -88,7 +108,7 @@ teclas.forEach(tecla => {
              setTimeout(() => {
                 iniciarjogo();
                 podeClicar = true;
-            }, 1000);
+            }, 1500);
 
         } else {
             mostrarFeedback(false);
