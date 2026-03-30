@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Love+Ya+Like+A+Sister&family=Space+Grotesk:wght@300..700&display=swap" rel="stylesheet">
+
+    <title>Piano Color</title>
+</head>
+<body>
+
+    <section id="menu" class="tela-menu">
+
+        <div class="menu-container">
+            <h1>PIANO-COLOR</h1>
+            <h3>Como jogar ?</h3>
+            <ol type="I">
+                <li class="regra1">Na tela, irá aparecer uma combinação de duas cores.</li>
+                <li class="regra2">Você deve adivinhar a junção dessas duas cores.</li>
+                <li class="regra3">A cor que você acha correta estará no teclado virtual.</li>
+                <li class="regra4">Após acertar uma sequência você pode escutar a melodia final, divirta-se!</li>
+            </ol>
+        </div> 
+
+        <button class="btn-menu"  onclick="iniciarjogo()" >Jogar</button>
+
+    </section>
+
+    <section id="jogo" style="display: none;">
+        <div class="jogo-container">
+            <!--Pergunta-->
+            
+            <div class="pergunta">
+                <div id="cor1" class="cores" ></div>
+                <span class="mais">+</span>
+                <div id="cor2" class="cores"></div>
+            </div>
+            
+            <div id="feedback" class="feedback"></div>
+
+            <div class="piano">
+        <!-- Teclas brancas quinta oitava :) -->
+                <div class="key white c5" data-color="red"></div>
+                <div class="key white d5" data-color="blue"></div>
+                <div class="key white e5" data-color="yellow"></div>
+                <div class="key white f5" data-color="purple"></div>
+                <div class="key white g5" data-color="green"></div>
+                <div class="key white a5" data-color="orange"></div>
+                <div class="key white b5" data-color="pink"></div>
+        <!-- Teclas pretas quinta oitava :) -->
+                <div class="key black c#5" style="left: 60px;"  ></div>
+                <div class="key black d#5" style="left: 120px;" ></div>
+                <div class="key black f#5" style="left: 240px;" ></div>
+                <div class="key black g#5" style="left: 300px;" ></div>
+                <div class="key black a#5" style="left: 360px;" ></div>
+        <!-- Teclas brancas sexta oitava ;) -->
+                <div class="key white c6" data-color="red2"></div>
+                <div class="key white d6" data-color="blue2"></div>
+                <div class="key white e6" data-color="yellow2"></div>
+                <div class="key white f6" data-color="purple2"></div>
+                <div class="key white g6" data-color="green2"></div>
+                <div class="key white a6" data-color="orange2"></div>
+                <div class="key white b6" data-color="pink2"></div>
+        <!-- Teclas pretas sexta oitava ;) -->
+                <div class="key black c#6" style="left: 480px;"  ></div>
+                <div class="key black d#6" style="left: 540px;" ></div>
+                <div class="key black f#6" style="left: 660px;" ></div>
+                <div class="key black g#6" style="left: 720px;" ></div>
+                <div class="key black a#5" style="left: 780px;" ></div>
+
+            </div>
+
+        </div>
+    </section>
+    
+    <script src="script.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,250 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+
+body{
+    font-family: Love Ya Like A Sister;
+    font-size: 20px;
+    color: aliceblue;
+    background-color: #151436;
+    background-image: url(IMG/pngwing.com.png);
+    background-repeat: repeat;
+    background-size: 900px;
+}
+
+.tela-menu {
+    display: flex;
+}
+
+#menu {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #151436;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow: visible;
+    background-image: url(IMG/pngwing.com.png);
+    background-repeat: repeat;
+    background-size: 900px;
+
+}
+
+.menu-container {
+    background-color: #2A2970;
+    padding: 0px 50px 50px;
+    border-radius: 24px;
+    text-align: center;
+    box-shadow: 0 10px 30px black;
+    border: 2px solid #5D5CFF30;
+    border-color:#B39EB5  ;
+    }
+
+button{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 24px;
+    border-color: #B39EB5;
+    line-height: 23px;
+    background-color: #2A2970;
+    box-shadow: 0 10px 30px black;
+    width: 150px;
+    height: auto;
+    padding: 10px 0;
+    cursor: pointer;
+    color: aliceblue;
+    font-family: Love Ya Like A Sister ;
+    font-size: 23px;
+}
+
+button:hover{
+    background-color:darkorchid;
+}
+
+h1{
+    margin-top: 40px 20px;
+    padding:10px 20px 10px;
+}
+
+h1:hover{
+    color: #8B0000;
+}
+
+h3{
+    padding: 25px 20px 30px ;
+}
+
+h3:hover{
+    color:#00008B;
+}
+
+.regra1, .regra2, .regra3, .regra4 {
+    margin: 10px 0px;
+}
+.regra1:hover{
+    color: aquamarine;
+}
+.regra2:hover{
+    color: pink;
+}
+.regra3:hover{
+    color: green;
+}
+.regra4:hover{
+    color:blueviolet
+}
+
+ol {
+    text-align: center;
+    line-height: 1.6;
+    list-style-position: inside;
+}
+
+header{
+    align-items: left;
+}
+
+#jogo {
+    display: flex;
+    flex-direction: column;   
+    align-items: center;      
+    height: 100vh;
+}
+
+.jogo-container{
+    background-color: #2A2970B0; 
+    backdrop-filter: blur(10px);   
+    padding: 40px 60px 100px;     
+    border-radius: 40px;
+    border: 4px solid #B39EB550;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+    position: absolute;
+    top: 55%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    min-width: 900px;
+}
+
+.pergunta{
+    margin-top: 0px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+}
+
+.cores{
+    margin-top: 0px;
+    width: 150px;
+    height: 150px;
+    border: 4px solid #B39EB550;
+    border-radius: 25px;
+    background-color: gray;
+}
+
+.mais{
+    margin-top: 20px;
+    font-size: 80px;
+}
+
+.piano {
+    position: relative;
+    bottom: auto;
+    left: auto;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.key {
+    border: 1px solid black;
+    cursor: pointer;
+}
+
+.white {
+    width: 60px;
+    height: 200px;
+    background: white;
+    z-index: 1;
+    border-radius: 7px 7px 7px 7px;
+}
+
+.black {
+    width: 40px;
+    height: 120px;
+    border-radius: 0 0 5px 5px;
+    background: black;
+    position: absolute;
+    z-index: 2;
+}
+
+.key:active {
+    transform: scale(0.97);
+    background: gray;
+}
+
+.white[data-color="red"]:hover {
+    background: red;
+}
+
+.white[data-color="blue"]:hover {
+    background: blue;
+}
+
+.white[data-color="yellow"]:hover {
+    background: yellow;
+}
+
+.white[data-color="purple"]:hover {
+    background: purple;
+}
+
+.white[data-color="green"]:hover {
+    background: green;
+}
+
+.white[data-color="orange"]:hover {
+    background: rgb(231, 151, 2);
+}
+
+.white[data-color="pink"]:hover {
+    background: rgb(220, 68, 93);
+}
+
+
+.feedback {
+    width: 100%;              
+    text-align: center;       
+    font-size: 40px;
+    margin: 14.5px 0; 
+    color: white;
+    opacity: 0;
+    transition: 0.2s;
+}
+
+.feedback.ativo {
+    opacity: 1;
+}
+/* quando aparece */
+.feedback.show {
+    opacity: 1;
+}
+
+/* acerto */
+.feedback.acerto {
+    background: green;
+}
+
+/* erro */
+.feedback.erro {
+    background: red;
+}
