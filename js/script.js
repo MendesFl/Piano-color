@@ -299,23 +299,8 @@ function tocarSom(nota) {
 document.querySelectorAll(".key").forEach(tecla => {
     tecla.addEventListener("click", () => {
         tocarSom(tecla.dataset.note);
-        if (tecla.dataset.color) verificarProgresso(tecla.dataset.color);
-    // 2. Usa suas funções de sorteio
-    const [c1, c2] = gerarCores();
-    corAlvoAtual = misturarCores(c1, c2);
-
-    // 3. Cria as bolinhas visualmente (Cor 1 + Cor 2)
-    [c1, c2].forEach((cor, index) => {
-        const novaBolinha = document.createElement("div");
-        novaBolinha.className = "cores";
-        novaBolinha.style.backgroundColor = cor;
-        container.appendChild(novaBolinha);
-
-        if (index === 0) {
-            const mais = document.createElement("span");
-            mais.className = "mais";
-            mais.textContent = "+";
-            container.appendChild(mais);
+        if (tecla.dataset.color) {verificarProgresso(tecla.dataset.color);
+    
         }
     });
 });
