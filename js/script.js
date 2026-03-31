@@ -300,7 +300,8 @@ document.querySelectorAll(".key").forEach(tecla => {
     tecla.addEventListener("click", () => {
         tocarSom(tecla.dataset.note);
         if (tecla.dataset.color) {verificarProgresso(tecla.dataset.color);
-    
+    // 2. Usa suas funções de sorteio
+   
         }
     });
 });
