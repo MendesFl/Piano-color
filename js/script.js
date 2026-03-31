@@ -1,38 +1,29 @@
 let misturasAcertadas = [];
 let indicePasso = 0;
 const coresPrimarias = ["blue","yellow","red"];
-const cor1 = document.getElementById('cor1')
-const cor2 = document.getElementById('cor2')
-
+let faseAtual = 1;
+let corAlvoAtual = ""; 
 
 function sortearCor(){
-    let indice = Math.floor(Math.random()*coresPrimarias.length)
-    return coresPrimarias[indice]
+    let indice = Math.floor(Math.random()*coresPrimarias.length);
+    return coresPrimarias[indice];
 }
 
 function gerarCores(){
-    let cor1, cor2, chave;
+    let c1, c2, chave;
     let tentativas = 0;
-    
-    do{
-        cor1 = sortearCor();
-        cor2 = sortearCor();
-
-        while (cor2 === cor1) {
-            cor2 = sortearCor();
-    }
-
-    let cores = [cor1, cor2].sort();
-    chave = cores + "-" + cores;
-
-    tentativas++;
-
+    do {
+        c1 = sortearCor();
+        c2 = sortearCor();
+        while (c2 === c1) {
+            c2 = sortearCor();
+        }
+        let cores = [c1, c2].sort();
+        chave = cores.join("-");
+        tentativas++;
     } while (misturasAcertadas.includes(chave) && tentativas < 10);
-
-    return [cor1,cor2]
-
+    return [c1,c2];
 }
-
 
 function misturarCores(cor1, cor2) {
     const mistura = {
@@ -40,36 +31,51 @@ function misturarCores(cor1, cor2) {
         "blue-red": "purple",
         "red-yellow": "orange"
     };
-
-    let cores = [cor1, cor2];
-    cores.sort();
-
-    let chave = cores[0] + "-" + cores[1];
-
+    let cores = [cor1, cor2].sort();
+    let chave = cores.join("-");
     return mistura[chave];
 }
 
+function iniciarjogo(){
+    document.getElementById('menu').style.display = 'none';
+    document.getElementById('jogo').style.display = 'flex';
+    faseAtual = 1;
+    indicePasso = 0;
+    misturasAcertadas = []; 
+    novoDesafioSorteado();
+}
+
+function novoDesafioSorteado() {
+    const container = document.querySelector(".melodia1");
+    if (!container) return;
+    container.innerHTML = "";
+    container.style.display = "flex"; // Garante que as bolinhas apareçam
+    
+    const [c1, c2] = gerarCores();
+    corAlvoAtual = misturarCores(c1, c2);
+
+    [c1, c2].forEach((cor, index) => {
+        const novaBolinha = document.createElement("div");
+        novaBolinha.className = "cores";
+        novaBolinha.style.backgroundColor = cor;
+        container.appendChild(novaBolinha);
+        if (index === 0) {
+            const mais = document.createElement("span");
+            mais.className = "mais";
+            mais.textContent = "+";
+            container.appendChild(mais);
+        }
+    });
+}
 
 function verificarProgresso(corClicada) {
-
+    // Agora a comparação é direta e única
     if (corClicada === corAlvoAtual) {
-        const bolinhas = document.querySelector(".melodia1 .cores");
-
-        if (bolinhas.length >= 2) {
-
-            let cor1 = bolinhas.classList.replace('cor-', '');
-            let cor2 = bolinhas.classList.replace('cor-', '');
-            let chaveFinalizada = [cor1, cor2].sort().join("-");
-
-            if (!misturasAcertadas.includes(chaveFinalizada)) {
-            misturasAcertadas.push(chaveFinalizada);
-            }
-
-        }
-
+        indicePasso++; 
         mostrarFeedback(true);
 
-        if (misturasAcertadas.length >= 3) { 
+        // Se acertar 3 vezes, libera o menu de vitória
+        if (indicePasso >= 3) { 
             setTimeout(() => {
                 document.querySelector(".melodia1").style.display = "none";
                 document.getElementById("escolha").style.display = "flex";
@@ -82,186 +88,222 @@ function verificarProgresso(corClicada) {
     }
 }
 
+// ESSA FUNÇÃO É O SEGREDO: Ela decide qual música tocar
+function reproduzirMusicaGanha() {
+    if (faseAtual === 1) {
+        tocarArquivoMelodia1();
+    } else if (faseAtual === 2) {
+        tocarArquivoMelodia2();
+    } else if (faseAtual === 3) {
+        tocarArquivoMelodia3();
+    }
+}
 
 function tocarArquivoMelodia1() {
-    const audioCompleto = new Audio('AUDIO/melodia1.mp3'); 
-    audioCompleto.play().catch(e => console.error("Erro ao tocar:", e));
-    
-    audioCompleto.onended = () => {
-        alert("Gostou? Que tal a próxima agora ?");
-    };
-}
-
-function prepararMelodia2() {
-    alert("Preparando Melodia 2... (Adicione sua nova lista de fases aqui!)");
-    location.reload();
-}
-
-
-function iniciarjogo(){
-    console.log('botão clicado');
-    const menu = document.getElementById('menu');
-    menu.style.display = 'none';
-
-    const jogo = document.getElementById('jogo');
-    jogo.style.display = 'flex';
-
-    novoDesafioSorteado();
-    indicePasso = 0;
-    misturasAcertadas();
-   
-}
-
-
-function tocarSom(nota) {
-    const audio = new Audio (`AUDIO/${nota}.mp3`);
-    audio.play().catch(e => console.log("Erro ao tocar som:",e));
-}
-
-const teclas = document.querySelectorAll(".key");
-
-teclas.forEach(tecla => {
-    tecla.addEventListener("click", () => {
-        const corEscolhida = tecla.dataset.color;
-        const notaTocada = tecla.dataset.note;
-
-        if (notaTocada) {
-            tocarSom(notaTocada);
-        }
-
-        if (!corEscolhida) return;
-
-        verificarProgresso(corEscolhida);
-
-    });
-});
-
-function mostrarFeedback(sucesso) {
-    const feedback = document.getElementById("feedback");
-    if (!feedback) return;
-
-    feedback.textContent = sucesso ? "Acertou! 🎉" : "Ops! Tente novamente. ❌";
-    feedback.className = `feedback ${sucesso ? "acerto" : "erro"} show`;
-
-    // Remove a mensagem depois de 1.2 segundos
-    setTimeout(() => {
-        feedback.className = "feedback";
-    }, 1200);
-}
-
-
-function tocarArquivoMelodia1() {
-    const audioCompleto = new Audio('AUDIO/melodia1.mp3');
-    
-    // 1. Defina aqui o tempo exato de cada nota da sua música (em milissegundos)
-    // Exemplo: 500 = 0,5 segundos | 1000 = 1 segundo
-    const mapaNotas = [
-
-        { cor: "green", tempo: 0 },
+    const audio = new Audio('AUDIO/melodia1.mp3');
+    const mapa = [
+        { cor: "green", tempo: 0 }, 
         { cor: "green", tempo: 550 },
-        { cor: "yellow", tempo: 1110 },
+        { cor: "yellow", tempo: 1110 }, 
         { cor: "red2", tempo: 1940 },
-        { cor: "pink", tempo: 2220 },
-        { cor: "orange", tempo: 2250 },
-        { cor: "green", tempo: 2770 },
+        { cor: "pink", tempo: 2220 }, 
+        { cor: "orange", tempo: 2500 },
+        { cor: "green", tempo: 2770 }, 
         { cor: "purple", tempo: 3330 },
 
-        { cor: "green", tempo: 4440 },
-        { cor: "green", tempo: 5000 },
-        { cor: "yellow", tempo: 5550 },
+        { cor: "orange", tempo: 4440 }, 
+        { cor: "orange", tempo: 5000 },
+        { cor: "purple", tempo: 5550 }, 
         { cor: "red2", tempo: 6380 },
-        { cor: "pink", tempo: 6660 },
+        { cor: "pink", tempo: 6660 }, 
         { cor: "orange", tempo: 6940 },
-        { cor: "green", tempo: 7220 },
-        { cor: "purple", tempo: 7770 },
+        { cor: "green", tempo: 7220 }, 
+        { cor: "green", tempo: 7770 },
 
-        { cor: "purple", tempo: 8880 },
+        { cor: "green", tempo: 8880 }, 
         { cor: "red2", tempo: 9440 },
-        { cor: "red2", tempo: 10000 },
+        { cor: "red2", tempo: 10000 }, 
         { cor: "red2", tempo: 10270 },
-        { cor: "blue2", tempo: 10550 },
+        { cor: "blue2", tempo: 10550 }, 
         { cor: "red2", tempo: 10830 },
-
-        { cor: "pink", tempo: 11110 },
-        { cor: "orange", tempo: 11660 },
-        { cor: "green", tempo: 12770 },
+       
+        { cor: "pink", tempo: 11110 }, 
+        { cor: "red2", tempo: 11660 },
+        { cor: "green", tempo: 12770 }, 
 
         { cor: "pink", tempo: 13330 },
-        { cor: "orange", tempo: 13880 },
-        { cor: "orange", tempo: 14440 },
-        { cor: "purple", tempo: 14720 },
-        { cor: "blue", tempo: 15000 },
+        { cor: "orange", tempo: 13880 }, 
+        { cor: "orange", tempo: 14440},
+        { cor: "purple", tempo: 14720},
+        { cor: "purple", tempo: 15000 }, 
 
-        { cor: "red", tempo: 15550},
-        { cor: "red", tempo: 16110},
-        // ... continue adicionando de acordo com o ritmo do seu MP3
+        { cor: "red", tempo: 15550 },
+        { cor: "red", tempo: 16140 }
+
     ];
+    animarTeclado(audio, mapa);
+}
 
+function tocarArquivoMelodia2() {
+    const audio = new Audio('AUDIO/melodia2.mp3'); 
+    const mapa2 = [
+        { cor: "red", tempo: 0 }, 
+        { cor: "red", tempo: 520 },
+        { cor: "green", tempo: 1140 }, 
+        { cor: "green", tempo: 1660 },
+        { cor: "orange", tempo: 2220 }, 
+        { cor: "orange", tempo: 2810 },
+        { cor: "green", tempo: 3330 },
+
+        { cor: "purple", tempo: 4440 }, 
+        { cor: "purple", tempo: 5000 },
+        { cor: "yellow", tempo: 5550 }, 
+        { cor: "yellow", tempo: 6110 },
+        { cor: "blue", tempo: 6660 }, 
+        { cor: "blue", tempo: 7220 },
+        { cor: "red", tempo: 7770 },
+
+        { cor: "green", tempo: 8880 }, 
+        { cor: "green", tempo: 9440 },
+        { cor: "purple", tempo: 10000 }, 
+        { cor: "purple", tempo: 10550 },
+        { cor: "yellow", tempo: 11110 }, 
+        { cor: "yellow", tempo: 11660 },
+        { cor: "blue", tempo: 12220 },
+
+        { cor: "green", tempo: 13330 }, 
+        { cor: "green", tempo: 13880 },
+        { cor: "purple", tempo: 14440 }, 
+        { cor: "purple", tempo: 15000 },
+        { cor: "yellow", tempo: 15550 }, 
+        { cor: "yellow", tempo: 16110 },
+        { cor: "blue", tempo: 16660 }
+    ];
+    animarTeclado(audio, mapa2);
+}
+
+function tocarArquivoMelodia3() {
+    const audio = new Audio('AUDIO/melodia3.mp3'); 
+    const mapa3 = [
+        { cor: "purple2", tempo: 0 }, 
+
+        { cor: "blue2", tempo: 550 },
+        { cor: "orange", tempo: 830 }, 
+        { cor: "red2", tempo: 1110 },
+        { cor: "blue2", tempo: 1380 }, 
+
+        { cor: "purple2", tempo: 1940 },
+        
+        { cor: "yellow2", tempo: 2500 }, 
+        { cor: "purple2", tempo: 2770 }, 
+        { cor: "blue2", tempo: 3050 },
+        { cor: "orange", tempo: 3330 }, 
+        { cor: "red2", tempo: 3600 },
+        
+        { cor: "purple2", tempo: 4160 },
+
+        { cor: "purple2", tempo: 4720 },
+        { cor: "yellow2", tempo: 5000 },
+        { cor: "purple2", tempo: 5270 },
+        { cor: "orange2", tempo: 5550 },
+        { cor: "yellow2", tempo: 6110 },
+        { cor: "purple2", tempo: 6380 },
+        { cor: "purple2", tempo: 6940 },
+        { cor: "yellow2", tempo: 7220 },
+        { cor: "blue2", tempo: 7530 },
+        { cor: "red2", tempo: 7770 },
+        { cor: "yellow2", tempo: 8330 },
+
+        { cor: "purple2", tempo: 8880 }, 
+
+        { cor: "blue2", tempo: 9440 },
+        { cor: "orange", tempo: 9720 }, 
+        { cor: "red2", tempo: 10000 },
+        { cor: "blue2", tempo: 10270 }, 
+
+        { cor: "purple2", tempo: 10860 },
+        
+        { cor: "yellow2", tempo: 11380 }, 
+        { cor: "purple2", tempo: 11700 }, 
+        { cor: "blue2", tempo: 11940 },
+        { cor: "orange", tempo: 12220 }, 
+        { cor: "red2", tempo: 12530 },
+        
+        { cor: "yellow2", tempo: 13050 },
+        { cor: "purple2", tempo: 13610 },
+        { cor: "yellow2", tempo: 13880 },
+        { cor: "purple2", tempo: 14160 },
+        { cor: "orange2", tempo: 14440 },
+        { cor: "orange2", tempo: 15000 },
+        { cor: "pink2", tempo: 15240 },
+        { cor: "orange2", tempo: 15590 },
+        { cor: "green2", tempo: 16110 },
+        { cor: "purple2", tempo: 16660 },
+        { cor: "yellow2", tempo: 17220 }
+    ];
+    animarTeclado(audio, mapa3);
+}
+
+function animarTeclado(audio, mapa) {
     document.getElementById("escolha").style.display = "none";
-    
-    audioCompleto.play().then(() => {
-        // Percorre o mapa e agenda o brilho de cada tecla
-        mapaNotas.forEach(nota => {
+    audio.play().then(() => {
+        mapa.forEach(nota => {
             setTimeout(() => {
                 document.querySelectorAll('.key').forEach(k => k.classList.remove('active-autoplay'));
                 const tecla = document.querySelector(`.key[data-color="${nota.cor}"]`);
                 if (tecla) {
                     tecla.classList.add('active-autoplay');
-                    // Remove o brilho um pouco antes da próxima nota (ex: 300ms depois)
                     setTimeout(() => tecla.classList.remove('active-autoplay'), 250);
                 }
             }, nota.tempo);
         });
     });
-
-    audioCompleto.onended = () => {
-        document.getElementById("escolha").style.display = "flex";
-    };
+    audio.onended = () => document.getElementById("escolha").style.display = "flex";
 }
 
-let corAlvoAtual = ""; // Variável global para guardar a resposta certa
+function prepararMelodia2() {
+    faseAtual = 2;
+    indicePasso = 0;
+    misturasAcertadas = [];
+    document.getElementById("escolha").style.display = "none";
+    novoDesafioSorteado();
+}
 
-function novoDesafioSorteado() {
-    const container = document.querySelector(".melodia1");
-    if (!container) return;
+function mostrarFeedback(sucesso) {
+    const f = document.getElementById("feedback");
+    f.textContent = sucesso ? "Acertou! 🎉" : "Ops! Tente novamente. ❌";
+    f.className = `feedback ${sucesso ? "acerto" : "erro"} show`;
+    setTimeout(() => { f.className = "feedback"; }, 1200);
+}
 
-    // 1. Limpa o painel
-    container.innerHTML = "";
+function tocarSom(nota) {
+    new Audio(`AUDIO/${nota}.mp3`).play().catch(() => {});
+}
 
-    // 2. Usa suas funções de sorteio
-    const [c1, c2] = gerarCores();
-    corAlvoAtual = misturarCores(c1, c2);
-
-    // 3. Cria as bolinhas visualmente (Cor 1 + Cor 2)
-    [c1, c2].forEach((cor, index) => {
-        const novaBolinha = document.createElement("div");
-        novaBolinha.className = `cores cor-${cor}`;
-        container.appendChild(novaBolinha);
-
-        if (index === 0) {
-            const mais = document.createElement("span");
-            mais.className = "mais";
-            mais.textContent = "+";
-            container.appendChild(mais);
-        }
+document.querySelectorAll(".key").forEach(tecla => {
+    tecla.addEventListener("click", () => {
+        tocarSom(tecla.dataset.note);
+        if (tecla.dataset.color) verificarProgresso(tecla.dataset.color);
     });
+});
+
+function prepararMelodia3() {
+    faseAtual = 3; // Define a nova fase
+    indicePasso = 0; // Reseta os acertos
+    misturasAcertadas = []; // Limpa o histórico de misturas
+    
+    document.getElementById("escolha").style.display = "none"; // Esconde o menu de vitória
+    document.querySelector(".melodia1").style.display = "flex"; // Mostra as bolinhas de novo
+    
+    novoDesafioSorteado(); // Sorteia o primeiro desafio da fase 3
 }
 
-function verificarProgresso(corClicada) {
-    // Verifica se o usuário clicou na mistura certa das duas bolinhas
-    if (corClicada === corAlvoAtual) {
-        indicePasso++; // Contador de acertos
-        mostrarFeedback(true);
-
-        // Se ele acertar 5 vezes (ou o número que você quiser), libera a música
-        if (indicePasso >= 5) { 
-            document.querySelector(".melodia1").style.display = "none";
-            document.getElementById("escolha").style.display = "flex";
-        } else {
-            // Sorteia o próximo desafio após um pequeno delay
-            setTimeout(novoDesafioSorteado, 1000);
-        }
+function proximaFaseLogica() {
+    if (faseAtual === 1) {
+        prepararMelodia2();
+    } else if (faseAtual === 2) {
+        prepararMelodia3();
     } else {
-        mostrarFeedback(false);
+        alert("Parabéns! Você completou todas as músicas!");
     }
 }
