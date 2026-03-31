@@ -143,6 +143,23 @@ header{
     gap: 20px;
 }
 
+#escolha{
+    display: none;
+    flex-direction: column;
+    align-items: center; 
+    gap: 20px; 
+    margin-top: 20px;
+}
+
+.cores {
+    width: 80px;
+    height: 80px;
+    border: 2px solid #B39EB550;
+    border-radius: 25px;
+    display: inline-block; /* Garante que fiquem alinhadas */
+    transition: background-color 0.5s ease, transform 0.3s ease;
+}
+
 /*Sequência de cores*/
 .cor-green{
     margin-top: 0px;
@@ -533,6 +550,14 @@ header{
 .feedback.erro.show {
     opacity: 1;
     animation: pop 0.4s ease forwards;
+}
+
+.key.active-autoplay {
+    background-color: white !important;
+    box-shadow: 0 0 30px gold, inset 0 0 10px white;
+    transform: scale(0.95);
+    transition: all 0.1s ease;
+    z-index: 999;
 }
 
 @keyframes pop {

@@ -32,14 +32,14 @@
 
     <section id="jogo" style="display: none;">
         <div class="jogo-container">
-            <!--Pergunta-->
             
-            <div class="melodia1">
-                <div id="cor1" class="cor-green" ></div>
-                <span class="mais">+</span>
-                <div id="cor2" class="cor-yellow-orange"></div>
-                <span class="mais">+</span>
-                <div id="cor3" class="cor-yellow-green" ></div>
+            <div class="melodia1"></div>
+
+            <div id="escolha">Parabéns, você concluiu a primeira melodia!
+                <div style="display: flex; gap: 20px;">
+                    <button class="btn-menu" onclick="tocarArquivoMelodia1()">Ouvir Música Completa ?</button>
+                    <button class="btn-menu" onclick="prepararMelodia2()">Próxima Melodia ?</button>
+                </div>
             </div>
             
             <div id="feedback" class="feedback"></div>
