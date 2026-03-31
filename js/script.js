@@ -296,27 +296,32 @@ function tocarSom(nota) {
     new Audio(`AUDIO/${nota}.mp3`).play().catch(() => {});
 }
 
+// 1. Configura o que acontece ao clicar nas teclas do piano
 document.querySelectorAll(".key").forEach(tecla => {
     tecla.addEventListener("click", () => {
+        // Toca o som da nota musical
         tocarSom(tecla.dataset.note);
-        if (tecla.dataset.color) {verificarProgresso(tecla.dataset.color);
-    // 2. Usa suas funções de sorteio
-   
-        }
-    });
-});
 
+        // Se a tecla for uma cor (ex: azul, vermelho), verifica o progresso do desafio
+        if (tecla.dataset.color) {
+            verificarProgresso(tecla.dataset.color);
+        }
+    }); // Fecha o EventListener
+}); // Fecha o forEach
+
+// 2. Função para configurar a Fase 3
 function prepararMelodia3() {
-    faseAtual = 3; // Define a nova fase
-    indicePasso = 0; // Reseta os acertos
-    misturasAcertadas = []; // Limpa o histórico de misturas
+    faseAtual = 3; 
+    indicePasso = 0; 
+    misturasAcertadas = []; 
     
-    document.getElementById("escolha").style.display = "none"; // Esconde o menu de vitória
-    document.querySelector(".melodia1").style.display = "flex"; // Mostra as bolinhas de novo
+    document.getElementById("escolha").style.display = "none"; 
+    document.querySelector(".melodia1").style.display = "flex"; 
     
-    novoDesafioSorteado(); // Sorteia o primeiro desafio da fase 3
+    novoDesafioSorteado(); 
 }
 
+// 3. Lógica para avançar entre as fases do jogo
 function proximaFaseLogica() {
     if (faseAtual === 1) {
         prepararMelodia2();
@@ -324,5 +329,6 @@ function proximaFaseLogica() {
         prepararMelodia3();
     } else {
         alert("Parabéns! Você completou todas as músicas!");
+        location.reload(); // Reinicia o jogo ao terminar tudo
     }
 }
