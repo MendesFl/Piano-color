@@ -156,27 +156,44 @@ function tocarArquivoMelodia1() {
     // 1. Defina aqui o tempo exato de cada nota da sua música (em milissegundos)
     // Exemplo: 500 = 0,5 segundos | 1000 = 1 segundo
     const mapaNotas = [
-        //part1 - 4
+
         { cor: "green", tempo: 0 },
-        { cor: "yellow-orange", tempo: 550 },
-        { cor: "yellow-green", tempo: 1110 },
-        { cor: "green", tempo: 2220 },
-        { cor: "yellow-orange", tempo: 2770 },
-        { cor: "blue", tempo: 3330 },
+        { cor: "green", tempo: 550 },
+        { cor: "yellow", tempo: 1110 },
+        { cor: "red2", tempo: 1940 },
+        { cor: "pink", tempo: 2220 },
+        { cor: "orange", tempo: 2250 },
+        { cor: "green", tempo: 2770 },
+        { cor: "purple", tempo: 3330 },
+
         { cor: "green", tempo: 4440 },
-        { cor: "yellow-orange", tempo: 5000 },
-        { cor: "yellow-green", tempo: 5550  },
-        { cor: "red2", tempo: 5583 },
-        { cor: "green", tempo: 6250 },
-        { cor: "yellow-orange", tempo: 6660 },
-        { cor: "orange", tempo: 6694 },
-        { cor: "purple", tempo: 7360 },
-        { cor: "orange", tempo: 7770 },
-        { cor: "green", tempo: 8880 },
+        { cor: "green", tempo: 5000 },
+        { cor: "yellow", tempo: 5550 },
+        { cor: "red2", tempo: 6380 },
+        { cor: "pink", tempo: 6660 },
+        { cor: "orange", tempo: 6940 },
+        { cor: "green", tempo: 7220 },
+        { cor: "purple", tempo: 7770 },
 
-        //part5-8
-        
+        { cor: "purple", tempo: 8880 },
+        { cor: "red2", tempo: 9440 },
+        { cor: "red2", tempo: 10000 },
+        { cor: "red2", tempo: 10270 },
+        { cor: "blue2", tempo: 10550 },
+        { cor: "red2", tempo: 10830 },
 
+        { cor: "pink", tempo: 11110 },
+        { cor: "orange", tempo: 11660 },
+        { cor: "green", tempo: 12770 },
+
+        { cor: "pink", tempo: 13330 },
+        { cor: "orange", tempo: 13880 },
+        { cor: "orange", tempo: 14440 },
+        { cor: "purple", tempo: 14720 },
+        { cor: "blue", tempo: 15000 },
+
+        { cor: "red", tempo: 15550},
+        { cor: "red", tempo: 16110},
         // ... continue adicionando de acordo com o ritmo do seu MP3
     ];
 
@@ -186,11 +203,12 @@ function tocarArquivoMelodia1() {
         // Percorre o mapa e agenda o brilho de cada tecla
         mapaNotas.forEach(nota => {
             setTimeout(() => {
+                document.querySelectorAll('.key').forEach(k => k.classList.remove('active-autoplay'));
                 const tecla = document.querySelector(`.key[data-color="${nota.cor}"]`);
                 if (tecla) {
                     tecla.classList.add('active-autoplay');
                     // Remove o brilho um pouco antes da próxima nota (ex: 300ms depois)
-                    setTimeout(() => tecla.classList.remove('active-autoplay'), 300);
+                    setTimeout(() => tecla.classList.remove('active-autoplay'), 250);
                 }
             }, nota.tempo);
         });
