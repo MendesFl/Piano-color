@@ -1,79 +1,87 @@
-const fases_melodia1 = [
-    {
-    nome:"parte1",
-    sequencia:["green", "yellow-orange","yellow-green"]
-    },
-    {
-    nome:"parte2",
-    sequencia:["green", "yellow-orange","blue"]
-    },
-    {
-    nome:"parte3",
-    sequencia:["green", "yellow-orange","red2","green","yellow-orange"]
-    },
-    {
-    nome:"parte4",
-    sequencia:["orange", "purple","orange","green"]
-    },
-    {
-    nome:"parte5",
-    sequencia:["green", "yellow-orange","yellow-green"]
-    },
-    {
-    nome:"parte6",
-    sequencia:["green", "yellow-orange","blue"]
-    },
-    {
-    nome:"parte7",
-    sequencia:["yellow-orange","green","blue2","yellow-green2","blue2"]
-    },
-    {
-    nome:"parte8",
-    sequencia:["red2","yellow-orange","green","red2"]
+let misturasAcertadas = [];
+let indicePasso = 0;
+const coresPrimarias = ["blue","yellow","red"];
+const cor1 = document.getElementById('cor1')
+const cor2 = document.getElementById('cor2')
+
+
+function sortearCor(){
+    let indice = Math.floor(Math.random()*coresPrimarias.length)
+    return coresPrimarias[indice]
+}
+
+function gerarCores(){
+    let cor1, cor2, chave;
+    let tentativas = 0;
+    
+    do{
+        cor1 = sortearCor();
+        cor2 = sortearCor();
+
+        while (cor2 === cor1) {
+            cor2 = sortearCor();
     }
 
-];
+    let cores = [cor1, cor2].sort();
+    chave = cores + "-" + cores;
 
-let faseAtual = 0;
-let indicePasso = 0;
+    tentativas++;
+
+    } while (misturasAcertadas.includes(chave) && tentativas < 10);
+
+    return [cor1,cor2]
+
+}
+
+
+function misturarCores(cor1, cor2) {
+    const mistura = {
+        "blue-yellow": "green",
+        "blue-red": "purple",
+        "red-yellow": "orange"
+    };
+
+    let cores = [cor1, cor2];
+    cores.sort();
+
+    let chave = cores[0] + "-" + cores[1];
+
+    return mistura[chave];
+}
+
 
 function verificarProgresso(corClicada) {
-    const melodiaDaFase = fases_melodia1[faseAtual].sequencia;
 
-    if (corClicada === melodiaDaFase[indicePasso]) {
-        indicePasso++;
-        console.log("Acertou nota! Próximo passo:", indicePasso);
+    if (corClicada === corAlvoAtual) {
+        const bolinhas = document.querySelector(".melodia1 .cores");
 
-        if (indicePasso === melodiaDaFase.length) {
-            console.log("Fase concluída! Chamando próxima fase...");
-            mostrarFeedback(true);
+        if (bolinhas.length >= 2) {
 
+            let cor1 = bolinhas.classList.replace('cor-', '');
+            let cor2 = bolinhas.classList.replace('cor-', '');
+            let chaveFinalizada = [cor1, cor2].sort().join("-");
+
+            if (!misturasAcertadas.includes(chaveFinalizada)) {
+            misturasAcertadas.push(chaveFinalizada);
+            }
+
+        }
+
+        mostrarFeedback(true);
+
+        if (misturasAcertadas.length >= 3) { 
             setTimeout(() => {
-                proximaFase();
-            }, 1500);
+                document.querySelector(".melodia1").style.display = "none";
+                document.getElementById("escolha").style.display = "flex";
+            }, 1000);
+        } else {
+            setTimeout(novoDesafioSorteado, 1000);
         }
     } else {
-        console.log("Errou a nota!");
         mostrarFeedback(false);
     }
 }
 
-function proximaFase() {
-    faseAtual++;
-    indicePasso = 0;
-
-    if (faseAtual < fases_melodia1.length) {
-        console.log("Iniciando: " + fases_melodia1[faseAtual].nome);
-        atualizarBolinhasNoPainel(); 
-    } else {
-        document.querySelector(".melodia1").style.display = "none";
-        document.getElementById("escolha").style.display = "flex";
-
-        mostrarFeedback(true);
-        const fb = document.getElementById("feedback");
-        if(fb) fb.textContent = "MELODIA CONCLUÍDA!";
-    }
-}
 
 function tocarArquivoMelodia1() {
     const audioCompleto = new Audio('AUDIO/melodia1.mp3'); 
@@ -89,32 +97,6 @@ function prepararMelodia2() {
     location.reload();
 }
 
-function atualizarBolinhasNoPainel() {
-    const coresNovaFase = fases_melodia1[faseAtual].sequencia;
-    const container = document.querySelector(".melodia1");
-    
-    if(!container) return;
-
-    // Limpa o que está lá
-    container.innerHTML = "";
-
-    // Cria as novas bolinhas dinamicamente
-    coresNovaFase.forEach((cor, index) => {
-        const novaBolinha = document.createElement("div");
-        novaBolinha.className = `cores cor-${cor}`; // Usa a classe de cor correspondente
-        container.appendChild(novaBolinha);
-
-        // Adiciona o sinal de "+" entre elas, exceto na última
-        if (index < coresNovaFase.length - 1) {
-            const mais = document.createElement("span");
-            mais.className = "mais";
-            mais.textContent = "+";
-            container.appendChild(mais);
-        }
-    });
-}
-
-
 
 function iniciarjogo(){
     console.log('botão clicado');
@@ -124,10 +106,9 @@ function iniciarjogo(){
     const jogo = document.getElementById('jogo');
     jogo.style.display = 'flex';
 
-    faseAtual = 0;
+    novoDesafioSorteado();
     indicePasso = 0;
-    
-    atualizarBolinhasNoPainel();
+    misturasAcertadas();
    
 }
 
@@ -218,4 +199,51 @@ function tocarArquivoMelodia1() {
     audioCompleto.onended = () => {
         document.getElementById("escolha").style.display = "flex";
     };
+}
+
+let corAlvoAtual = ""; // Variável global para guardar a resposta certa
+
+function novoDesafioSorteado() {
+    const container = document.querySelector(".melodia1");
+    if (!container) return;
+
+    // 1. Limpa o painel
+    container.innerHTML = "";
+
+    // 2. Usa suas funções de sorteio
+    const [c1, c2] = gerarCores();
+    corAlvoAtual = misturarCores(c1, c2);
+
+    // 3. Cria as bolinhas visualmente (Cor 1 + Cor 2)
+    [c1, c2].forEach((cor, index) => {
+        const novaBolinha = document.createElement("div");
+        novaBolinha.className = `cores cor-${cor}`;
+        container.appendChild(novaBolinha);
+
+        if (index === 0) {
+            const mais = document.createElement("span");
+            mais.className = "mais";
+            mais.textContent = "+";
+            container.appendChild(mais);
+        }
+    });
+}
+
+function verificarProgresso(corClicada) {
+    // Verifica se o usuário clicou na mistura certa das duas bolinhas
+    if (corClicada === corAlvoAtual) {
+        indicePasso++; // Contador de acertos
+        mostrarFeedback(true);
+
+        // Se ele acertar 5 vezes (ou o número que você quiser), libera a música
+        if (indicePasso >= 5) { 
+            document.querySelector(".melodia1").style.display = "none";
+            document.getElementById("escolha").style.display = "flex";
+        } else {
+            // Sorteia o próximo desafio após um pequeno delay
+            setTimeout(novoDesafioSorteado, 1000);
+        }
+    } else {
+        mostrarFeedback(false);
+    }
 }
