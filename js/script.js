@@ -71,7 +71,25 @@ function novoDesafioSorteado() {
 function verificarProgresso(corClicada) {
     // Agora a comparação é direta e única
     if (corClicada === corAlvoAtual) {
+<<<<<<< HEAD
         indicePasso++; 
+=======
+
+        const bolinhas = document.querySelectorAll(".melodia1 .cores");
+
+        if (bolinhas.length >= 2) {
+
+            const cor1 = bolinhas[0].style.backgroundColor;
+            const cor2 = bolinhas[1].style.backgroundColor;
+
+            const chaveFinalizada = [cor1, cor2].sort().join("-");
+
+            if (!misturasAcertadas.includes(chaveFinalizada)) {
+                misturasAcertadas.push(chaveFinalizada);
+            }
+        }
+
+>>>>>>> 7e8ca7c11423a04ff451626e331195ff62f493bd
         mostrarFeedback(true);
 
         // Se acertar 3 vezes, libera o menu de vitória
@@ -83,11 +101,13 @@ function verificarProgresso(corClicada) {
         } else {
             setTimeout(novoDesafioSorteado, 1000);
         }
+
     } else {
         mostrarFeedback(false);
     }
 }
 
+<<<<<<< HEAD
 // ESSA FUNÇÃO É O SEGREDO: Ela decide qual música tocar
 function reproduzirMusicaGanha() {
     if (faseAtual === 1) {
@@ -99,6 +119,8 @@ function reproduzirMusicaGanha() {
     }
 }
 
+=======
+>>>>>>> 7e8ca7c11423a04ff451626e331195ff62f493bd
 function tocarArquivoMelodia1() {
     const audio = new Audio('AUDIO/melodia1.mp3');
     const mapa = [
@@ -280,10 +302,30 @@ function tocarSom(nota) {
     new Audio(`AUDIO/${nota}.mp3`).play().catch(() => {});
 }
 
+<<<<<<< HEAD
 document.querySelectorAll(".key").forEach(tecla => {
     tecla.addEventListener("click", () => {
         tocarSom(tecla.dataset.note);
         if (tecla.dataset.color) verificarProgresso(tecla.dataset.color);
+=======
+    // 2. Usa suas funções de sorteio
+    const [c1, c2] = gerarCores();
+    corAlvoAtual = misturarCores(c1, c2);
+
+    // 3. Cria as bolinhas visualmente (Cor 1 + Cor 2)
+    [c1, c2].forEach((cor, index) => {
+        const novaBolinha = document.createElement("div");
+        novaBolinha.className = "cores";
+        novaBolinha.style.backgroundColor = cor;
+        container.appendChild(novaBolinha);
+
+        if (index === 0) {
+            const mais = document.createElement("span");
+            mais.className = "mais";
+            mais.textContent = "+";
+            container.appendChild(mais);
+        }
+>>>>>>> 7e8ca7c11423a04ff451626e331195ff62f493bd
     });
 });
 
