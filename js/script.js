@@ -108,7 +108,7 @@ function verificarProgresso(corClicada) {
 }
 
 <<<<<<< HEAD
-// ESSA FUNÇÃO É O SEGREDO: Ela decide qual música tocar
+
 function reproduzirMusicaGanha() {
     if (faseAtual === 1) {
         tocarArquivoMelodia1();
