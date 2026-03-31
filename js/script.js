@@ -53,18 +53,19 @@ function misturarCores(cor1, cor2) {
 function verificarProgresso(corClicada) {
 
     if (corClicada === corAlvoAtual) {
-        const bolinhas = document.querySelector(".melodia1 .cores");
+
+        const bolinhas = document.querySelectorAll(".melodia1 .cores");
 
         if (bolinhas.length >= 2) {
 
-            let cor1 = bolinhas.classList.replace('cor-', '');
-            let cor2 = bolinhas.classList.replace('cor-', '');
-            let chaveFinalizada = [cor1, cor2].sort().join("-");
+            const cor1 = bolinhas[0].style.backgroundColor;
+            const cor2 = bolinhas[1].style.backgroundColor;
+
+            const chaveFinalizada = [cor1, cor2].sort().join("-");
 
             if (!misturasAcertadas.includes(chaveFinalizada)) {
-            misturasAcertadas.push(chaveFinalizada);
+                misturasAcertadas.push(chaveFinalizada);
             }
-
         }
 
         mostrarFeedback(true);
@@ -77,11 +78,11 @@ function verificarProgresso(corClicada) {
         } else {
             setTimeout(novoDesafioSorteado, 1000);
         }
+
     } else {
         mostrarFeedback(false);
     }
 }
-
 
 function tocarArquivoMelodia1() {
     const audioCompleto = new Audio('AUDIO/melodia1.mp3'); 
@@ -235,7 +236,8 @@ function novoDesafioSorteado() {
     // 3. Cria as bolinhas visualmente (Cor 1 + Cor 2)
     [c1, c2].forEach((cor, index) => {
         const novaBolinha = document.createElement("div");
-        novaBolinha.className = `cores cor-${cor}`;
+        novaBolinha.className = "cores";
+        novaBolinha.style.backgroundColor = cor;
         container.appendChild(novaBolinha);
 
         if (index === 0) {
