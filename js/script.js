@@ -71,9 +71,7 @@ function novoDesafioSorteado() {
 function verificarProgresso(corClicada) {
     // Agora a comparação é direta e única
     if (corClicada === corAlvoAtual) {
-<<<<<<< HEAD
         indicePasso++; 
-=======
 
         const bolinhas = document.querySelectorAll(".melodia1 .cores");
 
@@ -89,7 +87,6 @@ function verificarProgresso(corClicada) {
             }
         }
 
->>>>>>> 7e8ca7c11423a04ff451626e331195ff62f493bd
         mostrarFeedback(true);
 
         // Se acertar 3 vezes, libera o menu de vitória
@@ -107,7 +104,6 @@ function verificarProgresso(corClicada) {
     }
 }
 
-<<<<<<< HEAD
 
 function reproduzirMusicaGanha() {
     if (faseAtual === 1) {
@@ -119,8 +115,6 @@ function reproduzirMusicaGanha() {
     }
 }
 
-=======
->>>>>>> 7e8ca7c11423a04ff451626e331195ff62f493bd
 function tocarArquivoMelodia1() {
     const audio = new Audio('AUDIO/melodia1.mp3');
     const mapa = [
@@ -302,12 +296,10 @@ function tocarSom(nota) {
     new Audio(`AUDIO/${nota}.mp3`).play().catch(() => {});
 }
 
-<<<<<<< HEAD
 document.querySelectorAll(".key").forEach(tecla => {
     tecla.addEventListener("click", () => {
         tocarSom(tecla.dataset.note);
         if (tecla.dataset.color) verificarProgresso(tecla.dataset.color);
-=======
     // 2. Usa suas funções de sorteio
     const [c1, c2] = gerarCores();
     corAlvoAtual = misturarCores(c1, c2);
@@ -325,7 +317,6 @@ document.querySelectorAll(".key").forEach(tecla => {
             mais.textContent = "+";
             container.appendChild(mais);
         }
->>>>>>> 7e8ca7c11423a04ff451626e331195ff62f493bd
     });
 });
 
